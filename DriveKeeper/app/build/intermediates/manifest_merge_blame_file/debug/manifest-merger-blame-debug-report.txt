@@ -6,41 +6,47 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="15"
-8-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml
+8-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="29" />
-9-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml
+9-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml
 10
 11    <application
-11-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:5:5-19:19
+11-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:5:5-21:19
 12        android:allowBackup="true"
-12-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:6:9-35
+12-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:6:9-35
 13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-13-->[androidx.core:core:1.0.1] /home/xicocana/.gradle/caches/transforms-2/files-2.1/c0a39027978b83a483a047f5c31d0c4e/core-1.0.1/AndroidManifest.xml:22:18-86
+13-->[androidx.core:core:1.0.1] C:\Users\xicocana\.gradle\caches\transforms-2\files-2.1\c0a39027978b83a483a047f5c31d0c4e\core-1.0.1\AndroidManifest.xml:22:18-86
 14        android:debuggable="true"
 15        android:icon="@mipmap/ic_launcher"
-15-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:7:9-43
+15-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:7:9-43
 16        android:label="@string/app_name"
-16-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:8:9-41
+16-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:8:9-41
 17        android:roundIcon="@mipmap/ic_launcher_round"
-17-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:9:9-54
+17-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:9:9-54
 18        android:supportsRtl="true"
-18-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:10:9-35
+18-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:10:9-35
 19        android:theme="@style/AppTheme" >
-19-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:11:9-40
-20        <activity android:name="meic.sirs.drivekeeper.MainActivity" >
-20-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:12:9-18:20
-20-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:12:19-47
-21            <intent-filter>
-21-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:13:13-17:29
-22                <action android:name="android.intent.action.MAIN" />
-22-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:14:17-69
-22-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:14:25-66
-23
-24                <category android:name="android.intent.category.LAUNCHER" />
-24-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:16:17-77
-24-->/home/xicocana/AndroidStudioProjects/DriveKeeper/app/src/main/AndroidManifest.xml:16:27-74
-25            </intent-filter>
-26        </activity>
-27    </application>
-28
-29</manifest>
+19-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:11:9-40
+20        <activity android:name="meic.sirs.drivekeeper.UserOptionsActivity" />
+20-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:12:9-66
+20-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:12:19-54
+21        <activity android:name="meic.sirs.drivekeeper.LoginActivity" />
+21-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:13:9-51
+21-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:13:19-48
+22        <activity android:name="meic.sirs.drivekeeper.MainActivity" >
+22-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:14:9-20:20
+22-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:14:19-47
+23            <intent-filter>
+23-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:15:13-19:29
+24                <action android:name="android.intent.action.MAIN" />
+24-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:16:17-69
+24-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:16:25-66
+25
+26                <category android:name="android.intent.category.LAUNCHER" />
+26-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:18:17-77
+26-->C:\Users\xicocana\Desktop\SIRS\DriveKeeper\app\src\main\AndroidManifest.xml:18:27-74
+27            </intent-filter>
+28        </activity>
+29    </application>
+30
+31</manifest>
