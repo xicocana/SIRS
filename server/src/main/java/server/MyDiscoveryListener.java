@@ -140,9 +140,7 @@ public class MyDiscoveryListener implements DiscoveryListener{
             };
 
             for (RemoteDevice device : listener.devices) {
-                agent.searchServices(
-                        attrIDs,uuidSet,device,listener);
-
+                agent.searchServices(attrIDs,uuidSet,device,listener);
 
                 try {
                     synchronized(lock){

@@ -1,4 +1,4 @@
-package net.codejava.crypto;
+package Crypto;
  
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
- 
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,10 +19,15 @@ import javax.crypto.spec.SecretKeySpec;
  * @author www.codejava.net
  *
  */
-public class Crypto {
+public  class Crypto {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
- 
+    public static final String ENCRYPT = "encrypt";
+    public static final String DECRYPT = "decrypt";
+
+
+
+
     public static void encrypt(String key, File inputFile, File outputFile)
             throws CryptoException {
         doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
@@ -31,6 +36,41 @@ public class Crypto {
     public static void decrypt(String key, File inputFile, File outputFile)
             throws CryptoException {
         doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
+    }
+
+    public static void doSomething(String folderName,String type, String key){
+        String dir = System.getProperty("user.dir") + "/" + folderName;
+        System.out.println(dir);
+        File folder = new File(dir);
+
+
+        File[] listOfFiles = folder.listFiles();
+
+        if (listOfFiles != null ){
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    try {
+                        String fileDir = dir + "/" + file.getName();
+                        if(Crypto.ENCRYPT.equals(type)){
+                            File encryptedFile = new File(fileDir +".encrypted");
+                            Crypto.encrypt(key, file, encryptedFile);
+                            file.delete();
+                            System.out.println("Encrypted file " + file.getName() + " with key " + key + "\n");
+                        }
+                        else if(Crypto.DECRYPT.equals(type)){
+                            File decryptedFile = new File(fileDir.replaceFirst(".encrypted", ""));
+                            Crypto.decrypt(key, file, decryptedFile);
+                             file.delete();
+                            System.out.println("Decrypted file " + file.getName() + " with key " + key + "\n");
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
  
     private static void doCrypto(int cipherMode, String key, File inputFile,
@@ -58,6 +98,8 @@ public class Crypto {
             throw new CryptoException("Error encrypting/decrypting file", ex);
         }
     }
+
+
 
     public static void main(String[] args) {
 
