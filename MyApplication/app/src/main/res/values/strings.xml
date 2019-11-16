@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">DriveKeeper</string>
     <string name="action_settings">Settings</string>
     <string name="hello">Hello World, RemoteBluetooth!</string>
     <string name="btn_find">Find Device</string>

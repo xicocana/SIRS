@@ -49,8 +49,8 @@ public class RemoteBluetooth extends Activity {
         
         // Set up the window layout
 
-        setContentView(R.layout.main);
-
+        //setContentView(R.layout.main);
+        setContentView(R.layout.comimagem);
         
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
