@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 public class RemoteBluetoothServer{
 
@@ -38,10 +39,10 @@ class WaitThread implements Runnable {
     /** Waiting for connection from devices */
     private void waitForConnection() {
         // retrieve the local Bluetooth device object
-        LocalDevice local = null;
+        LocalDevice local;
 
         StreamConnectionNotifier notifier;
-        StreamConnection connection = null;
+        StreamConnection connection;
 
         // setup the server to listen for connection
         try {
@@ -90,20 +91,30 @@ class ProcessConnectionThread implements Runnable {
             //PREPARE DH
             DHUtils dhUtils = new DHUtils();
             OutputStream outputStream =  mConnection.openOutputStream();
+            InputStream inputStream = mConnection.openInputStream();
+
+            byte[] buffer = new byte[1024];
 
             // Server encodes her public key, and sends it over
             byte[] serverPubKeyEnc =  dhUtils.generateServerPublicKey();
             outputStream.write(serverPubKeyEnc);
 
+            //Server receives YB
+            inputStream.read(buffer);
+            dhUtils.initPhase1(buffer);
 
+            //Generate Shared Secret
+            dhUtils.generateSharedSecret();
 
             // prepare to receive data
-            InputStream inputStream = mConnection.openInputStream();
-
-            System.out.println("waiting for input");
-
+            System.out.println("waiting for input ...");
             while (true) {
-                int command = inputStream.read();
+                buffer = new byte[1024];
+                int numberOfB = inputStream.read(buffer);
+                byte[] result = Arrays.copyOfRange(buffer,0,numberOfB);
+                String msg = new String(dhUtils.decript(result));
+
+                int command = Integer.parseInt(msg);
 
                 if (command == EXIT_CMD) {
                     System.out.println("finish process");

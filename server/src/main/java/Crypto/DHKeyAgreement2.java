@@ -29,6 +29,8 @@ package Crypto;
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import sun.security.ec.ECPublicKeyImpl;
+
 import java.security.*;
 import java.security.spec.*;
 import javax.crypto.*;
@@ -50,7 +52,7 @@ public class DHKeyAgreement2 {
          * in encoded format.
          * He instantiates a DH public key from the encoded key material.
          */
-        KeyFactory bobKeyFac = KeyFactory.getInstance("DH");
+        KeyFactory bobKeyFac = KeyFactory.getInstance("EC");
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(alicePubKeyEnc);
 
         PublicKey alicePubKey = bobKeyFac.generatePublic(x509KeySpec);
@@ -60,17 +62,17 @@ public class DHKeyAgreement2 {
          * He must use the same parameters when he generates his own key
          * pair.
          */
-        DHParameterSpec dhParamFromAlicePubKey = ((DHPublicKey)alicePubKey).getParams();
+        ECParameterSpec dhParamFromAlicePubKey = ((ECPublicKeyImpl)alicePubKey).getParams();
 
         // Bob creates his own DH key pair
         System.out.println("BOB: Generate DH keypair ...");
-        KeyPairGenerator bobKpairGen = KeyPairGenerator.getInstance("DH");
-        bobKpairGen.initialize(dhParamFromAlicePubKey);
+        KeyPairGenerator bobKpairGen = KeyPairGenerator.getInstance("EC");
+        bobKpairGen.initialize(256);
         KeyPair bobKpair = bobKpairGen.generateKeyPair();
 
         // Bob creates and initializes his DH KeyAgreement object
         System.out.println("BOB: Initialization ...");
-        KeyAgreement bobKeyAgree = KeyAgreement.getInstance("DH");
+        KeyAgreement bobKeyAgree = KeyAgreement.getInstance("ECDH");
         bobKeyAgree.init(bobKpair.getPrivate());
 
         // Bob encodes his public key, and sends it over to Alice.
@@ -133,12 +135,12 @@ public class DHKeyAgreement2 {
          * Bob encrypts, using AES in CBC mode
          */
 
-        Cipher bobCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher bobCipher = Cipher.getInstance("AES");
         byte[] iv = new byte[bobCipher.getBlockSize()];
         // rnd.nextBytes(iv);
         IvParameterSpec ivParams = new IvParameterSpec(iv);
 
-        bobCipher.init(Cipher.ENCRYPT_MODE, bobAesKey,ivParams);
+        bobCipher.init(Cipher.ENCRYPT_MODE, bobAesKey);
         byte[] cleartext = "This is just an example".getBytes();
         byte[] ciphertext = bobCipher.doFinal(cleartext);
 
