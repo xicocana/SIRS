@@ -1,3 +1,8 @@
-server/Server.class
+server/RemoteBluetoothServer.class
+Crypto/Crypto.class
+Crypto/CryptoException.class
 client/Client.class
+server/Server.class
 server/MyDiscoveryListener.class
+server/ProcessConnectionThread.class
+server/WaitThread.class

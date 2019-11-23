@@ -17,13 +17,13 @@ public class DHUtils {
          * client creates her own DH key pair with 2048-bit key size
          */
         System.out.println("CLIENT: Generate DH keypair ...");
-        KeyPairGenerator clientKpairGen = KeyPairGenerator.getInstance("DH");
-        clientKpairGen.initialize(2048);
+        KeyPairGenerator clientKpairGen = KeyPairGenerator.getInstance("EC");
+        clientKpairGen.initialize(256);
         clientKpair = clientKpairGen.generateKeyPair();
 
         // client creates and initializes her DH KeyAgreement object
         System.out.println("CLIENT: Initialization ...");
-        clientKeyAgree = KeyAgreement.getInstance("DH");
+        clientKeyAgree = KeyAgreement.getInstance("ECDH");
         clientKeyAgree.init(clientKpair.getPrivate());
     }
 
@@ -42,12 +42,14 @@ public class DHUtils {
          * Before she can do so, she has to instantiate a DH public key
          * from server's encoded key material.
          */
-        KeyFactory clientKeyFac = KeyFactory.getInstance("DH");
+        KeyFactory clientKeyFac = KeyFactory.getInstance("EC");
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(serverPubKeyEnc);
         PublicKey serverPubKey = clientKeyFac.generatePublic(x509KeySpec);
         System.out.println("CLIENT : Execute PHASE1 ...");
         clientKeyAgree.doPhase(serverPubKey, true);
     }
+
+    private byte[] sharedSecret = null;
 
     public byte[] generateSharedSecret(){
         /*
@@ -55,12 +57,16 @@ public class DHUtils {
          * agreement protocol.
          * Both generate the (same) shared secret.
          */
-        byte[] sharedSecret = clientKeyAgree.generateSecret();
-        clientAesKey = new SecretKeySpec(sharedSecret, 0, 16, "AES");
+        sharedSecret = clientKeyAgree.generateSecret();
+        clientAesKey = new SecretKeySpec(sharedSecret, "AES");
         return sharedSecret;
     }
 
-    public byte[] encript(byte[] sharedSecret) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public byte[] getSharedSecret(){
+        return sharedSecret;
+    }
+
+    public byte[] encript(int msgi) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         /*
          * server encrypts, using AES in CBC mode
@@ -69,10 +75,13 @@ public class DHUtils {
             clientCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         }
 
-        IvParameterSpec ivParams = getIvParameterSpec();
+        byte[] iv = new byte[16];
+        // rnd.nextBytes(iv);
+        IvParameterSpec ivParams = new IvParameterSpec(iv);
 
-        clientCipher.init(Cipher.ENCRYPT_MODE, clientAesKey,ivParams);
-        byte[] cleartext = "This is just an example".getBytes();
+        String msg = "" + msgi;
+        clientCipher.init(Cipher.ENCRYPT_MODE, clientAesKey, ivParams);
+        byte[] cleartext = msg.getBytes();
         return clientCipher.doFinal(cleartext);
     }
 
@@ -88,17 +97,46 @@ public class DHUtils {
          * client decrypts, using AES in CBC mode
          */
 
+
+
         // Instantiate AlgorithmParameters object from parameter encoding
         // obtained from server
         if (clientCipher == null) {
             clientCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         }
 
-        IvParameterSpec ivParams = getIvParameterSpec();
+        byte[] iv = new byte[16];
+        // rnd.nextBytes(iv);
+        IvParameterSpec ivParams = new IvParameterSpec(iv);
 
-        clientCipher.init(Cipher.DECRYPT_MODE, clientAesKey,ivParams);
+        clientCipher.init(Cipher.DECRYPT_MODE, clientAesKey, ivParams);
         return clientCipher.doFinal(ciphertext);
     }
 
+    /*
+     * Converts a byte to hex digit and writes to the supplied buffer
+     */
+    private static void byte2hex(byte b, StringBuffer buf) {
+        char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        int high = ((b & 0xf0) >> 4);
+        int low = (b & 0x0f);
+        buf.append(hexChars[high]);
+        buf.append(hexChars[low]);
+    }
 
+    /*
+     * Converts a byte array to hex string
+     */
+    public static String toHexString(byte[] block) {
+        StringBuffer buf = new StringBuffer();
+        int len = block.length;
+        for (int i = 0; i < len; i++) {
+            byte2hex(block[i], buf);
+            if (i < len-1) {
+                buf.append(":");
+            }
+        }
+        return buf.toString();
+    }
 }

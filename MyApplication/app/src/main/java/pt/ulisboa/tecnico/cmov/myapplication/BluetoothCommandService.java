@@ -3,6 +3,9 @@ package pt.ulisboa.tecnico.cmov.myapplication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -15,6 +18,8 @@ import android.os.Message;
 import android.util.Log;
 
 public class BluetoothCommandService {
+
+    private DHUtils dhutils = null;
 	// Debugging
     private static final String TAG = "BluetoothCommandService";
     private static final boolean D = true;
@@ -50,6 +55,11 @@ public class BluetoothCommandService {
      * @param handler  A Handler to send messages back to the UI Activity
      */
     public BluetoothCommandService(Context context, Handler handler) {
+        try{
+            dhutils = new DHUtils();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     	mAdapter = BluetoothAdapter.getDefaultAdapter();
     	mState = STATE_NONE;
     	//mConnectionLostCount = 0;
@@ -157,22 +167,7 @@ public class BluetoothCommandService {
         setState(STATE_NONE);
     }
     
-    /**
-     * Write to the ConnectedThread in an unsynchronized manner
-     * @param out The bytes to write
-     * @see ConnectedThread#write(byte[])
-     */
-    public void write(byte[] out) {
-        // Create temporary object
-        ConnectedThread r;
-        // Synchronize a copy of the ConnectedThread
-        synchronized (this) {
-            if (mState != STATE_CONNECTED) return;
-            r = mConnectedThread;
-        }
-        // Perform the write unsynchronized
-        r.write(out);
-    }
+
     
     public void write(int out) {
     	// Create temporary object
@@ -321,7 +316,38 @@ public class BluetoothCommandService {
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
-            
+
+            try{
+
+
+                byte[] clientPubKeyEnc = dhutils.generateServerPublicKey();
+
+                int bytes = mmInStream.read(buffer);
+                mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                dhutils.initPhase1(buffer);
+                writeWithoutEnc(clientPubKeyEnc);
+                byte[] sharedSecret = dhutils.generateSharedSecret();
+                System.out.println("Alice secret: " + dhutils.toHexString(sharedSecret));
+
+                /*byte[] teste = dhutils.encript(100);
+                System.out.println(new String(dhutils.decript(teste)));
+                buffer = new byte[1024];
+                int nob = mmInStream.read(buffer);
+                System.out.println(buffer);
+
+                byte[] newbuffer = new byte[nob];
+                for(int i=0; i<nob; i++){
+                    newbuffer[i] = buffer[i];
+                }
+                System.out.println(new String(dhutils.decript(newbuffer)));
+                */
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+
+
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
@@ -339,14 +365,11 @@ public class BluetoothCommandService {
             }
         }
 
-        /**
-         * Write to the connected OutStream.
-         * @param buffer  The bytes to write
-         */
-        public void write(byte[] buffer) {
+
+        public void writeWithoutEnc(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
-
+                mmOutStream.flush();
                 // Share the sent message back to the UI Activity
 //                mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, buffer)
 //                        .sendToTarget();
@@ -357,12 +380,14 @@ public class BluetoothCommandService {
         
         public void write(int out) {
         	try {
-                mmOutStream.write(out);
+                mmOutStream.write(dhutils.encript(out));
+                //mmOutStream.write(out);
+                //mmOutStream.flush();
 
                 // Share the sent message back to the UI Activity
 //                mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, buffer)
 //                        .sendToTarget();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "Exception during write", e);
             }
         }
