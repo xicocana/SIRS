@@ -16,13 +16,13 @@ public class DHUtils {
         /*
          * server creates her own DH key pair with 2048-bit key size
          */
-        System.out.println("SERVER: Generate DH keypair ...");
+        System.out.println("SERVER : Generate DH keypair ...");
         KeyPairGenerator serverKpairGen = KeyPairGenerator.getInstance("EC");
         serverKpairGen.initialize(256);
         serverKpair = serverKpairGen.generateKeyPair();
 
         // server creates and initializes her DH KeyAgreement object
-        System.out.println("SERVER: Initialization ...");
+        System.out.println("SERVER : Initialization ...");
         serverKeyAgree = KeyAgreement.getInstance("ECDH");
         serverKeyAgree.init(serverKpair.getPrivate());
     }

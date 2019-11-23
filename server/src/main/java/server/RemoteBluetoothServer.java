@@ -29,7 +29,7 @@ public class RemoteBluetoothServer{
 class WaitThread implements Runnable {
 
     /** Constructor */
-    public WaitThread() {
+    WaitThread() {
     }
 
     public void run() {
@@ -57,11 +57,11 @@ class WaitThread implements Runnable {
             return;
         }
         // waiting for connection
+        System.out.println("SERVER : Waiting for connection...");
+
         while(true) {
             try {
-                System.out.println("waiting for connection...");
                 connection = notifier.acceptAndOpen();
-
                 Thread processThread = new Thread(new ProcessConnectionThread(connection));
                 processThread.start();
             } catch (Exception e) {
@@ -81,7 +81,7 @@ class ProcessConnectionThread implements Runnable {
     private static final int KEY_RIGHT = 1;
     private static final int KEY_LEFT = 2;
 
-    public ProcessConnectionThread(StreamConnection connection) {
+    ProcessConnectionThread(StreamConnection connection) {
         mConnection = connection;
     }
 
@@ -107,7 +107,7 @@ class ProcessConnectionThread implements Runnable {
             dhUtils.generateSharedSecret();
 
             // prepare to receive data
-            System.out.println("waiting for input ...");
+            System.out.println("SERVER : Waiting for input ...");
             while (true) {
                 buffer = new byte[1024];
                 int numberOfB = inputStream.read(buffer);
@@ -117,7 +117,7 @@ class ProcessConnectionThread implements Runnable {
                 int command = Integer.parseInt(msg);
 
                 if (command == EXIT_CMD) {
-                    System.out.println("finish process");
+                    System.out.println("SERVER : Finish process");
                     break;
                 }
                 processCommand(command);
@@ -142,7 +142,6 @@ class ProcessConnectionThread implements Runnable {
 
                     Crypto.doSomething("FolderToEncrypt", Crypto.ENCRYPT,"1234567891111111");
 
-                    System.out.println("Right");
                     break;
                 case KEY_LEFT:
                     robot.keyPress(KeyEvent.VK_LEFT);
@@ -150,7 +149,6 @@ class ProcessConnectionThread implements Runnable {
 
                     Crypto.doSomething("FolderToEncrypt", Crypto.DECRYPT,"1234567891111111");
 
-                    System.out.println("Left");
                     break;
             }
         } catch (Exception e) {
