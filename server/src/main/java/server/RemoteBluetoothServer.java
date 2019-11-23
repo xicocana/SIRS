@@ -1,5 +1,9 @@
 package server;
 
+
+
+
+import Crypto.DHUtils;
 import Crypto.Crypto;
 
 import javax.bluetooth.DiscoveryAgent;
@@ -10,8 +14,8 @@ import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class RemoteBluetoothServer{
 
@@ -82,6 +86,17 @@ class ProcessConnectionThread implements Runnable {
 
     public void run() {
         try {
+
+            //PREPARE DH
+            DHUtils dhUtils = new DHUtils();
+            OutputStream outputStream =  mConnection.openOutputStream();
+
+            // Server encodes her public key, and sends it over
+            byte[] serverPubKeyEnc =  dhUtils.generateServerPublicKey();
+            outputStream.write(serverPubKeyEnc);
+
+
+
             // prepare to receive data
             InputStream inputStream = mConnection.openInputStream();
 
