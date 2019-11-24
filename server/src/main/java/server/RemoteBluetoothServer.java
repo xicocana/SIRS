@@ -1,10 +1,9 @@
 package server;
 
 
-
-
 import Crypto.DHUtils;
-import Crypto.Crypto;
+import Crypto.EncrDecrFilesUtil;
+import Crypto.RSAGenerator;
 
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
@@ -15,10 +14,15 @@ import javax.microedition.io.StreamConnectionNotifier;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-public class RemoteBluetoothServer{
+public class RemoteBluetoothServer {
 
     public static void main(String[] args) {
         Thread waitThread = new Thread(new WaitThread());
@@ -28,7 +32,9 @@ public class RemoteBluetoothServer{
 
 class WaitThread implements Runnable {
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     WaitThread() {
     }
 
@@ -36,7 +42,9 @@ class WaitThread implements Runnable {
         waitForConnection();
     }
 
-    /** Waiting for connection from devices */
+    /**
+     * Waiting for connection from devices
+     */
     private void waitForConnection() {
         // retrieve the local Bluetooth device object
         LocalDevice local;
@@ -59,7 +67,7 @@ class WaitThread implements Runnable {
         // waiting for connection
         System.out.println("SERVER : Waiting for connection...");
 
-        while(true) {
+        while (true) {
             try {
                 connection = notifier.acceptAndOpen();
                 Thread processThread = new Thread(new ProcessConnectionThread(connection));
@@ -88,16 +96,31 @@ class ProcessConnectionThread implements Runnable {
     public void run() {
         try {
 
-            //PREPARE DH
-            DHUtils dhUtils = new DHUtils();
-            OutputStream outputStream =  mConnection.openOutputStream();
+            OutputStream outputStream = mConnection.openOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             InputStream inputStream = mConnection.openInputStream();
-
+            DHUtils dhUtils = new DHUtils();
             byte[] buffer = new byte[1024];
+            RSAGenerator rsaGenerator = new RSAGenerator();
 
+            //PREPARE DH
             // Server encodes her public key, and sends it over
-            byte[] serverPubKeyEnc =  dhUtils.generateServerPublicKey();
-            outputStream.write(serverPubKeyEnc);
+            byte[] serverPubKeyEnc = dhUtils.generateServerPublicKey();
+            if(false){//TODO Alterar só enquanto nao funciona
+
+                Optional<byte[]> signedServerY = rsaGenerator.generateSign(serverPubKeyEnc,"server.key");
+                if (signedServerY.isPresent()){
+
+                    List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(serverPubKeyEnc));
+                    listBytesY.addAll(Arrays.asList(signedServerY.get()));
+                    objectOutputStream.writeObject(listBytesY);
+                }else {
+                    throw new Exception("Error signing message");
+                }
+            }else{
+                outputStream.write(serverPubKeyEnc);
+            }
+
 
             //Server receives YB
             inputStream.read(buffer);
@@ -111,7 +134,7 @@ class ProcessConnectionThread implements Runnable {
             while (true) {
                 buffer = new byte[1024];
                 int numberOfB = inputStream.read(buffer);
-                byte[] result = Arrays.copyOfRange(buffer,0,numberOfB);
+                byte[] result = Arrays.copyOfRange(buffer, 0, numberOfB);
                 String msg = new String(dhUtils.decript(result));
 
                 int command = Integer.parseInt(msg);
@@ -140,14 +163,14 @@ class ProcessConnectionThread implements Runnable {
                     robot.keyPress(KeyEvent.VK_RIGHT);
                     robot.keyRelease(KeyEvent.VK_RIGHT);
 
-                    Crypto.doSomething("FolderToEncrypt", Crypto.ENCRYPT,"1234567891111111");
+                    EncrDecrFilesUtil.doSomething("FolderToEncrypt", EncrDecrFilesUtil.ENCRYPT, "1234567891111111");
 
                     break;
                 case KEY_LEFT:
                     robot.keyPress(KeyEvent.VK_LEFT);
                     robot.keyRelease(KeyEvent.VK_LEFT);
 
-                    Crypto.doSomething("FolderToEncrypt", Crypto.DECRYPT,"1234567891111111");
+                    EncrDecrFilesUtil.doSomething("FolderToEncrypt", EncrDecrFilesUtil.DECRYPT, "1234567891111111");
 
                     break;
             }

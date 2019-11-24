@@ -2,19 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9563c8e6-bc4d-4cd1-b313-a1e1c04cb8b4" name="Default Changelist" comment="&quot;fix&quot;">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyApplication/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/BluetoothCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/BluetoothCommandService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/server.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FolderToEncrypt/Screenshot from 2019-10-24 21-21-38.png.encrypted.encrypted.encrypted.encrypted" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FolderToEncrypt/Screenshot from 2019-10-24 21-41-29.png.encrypted.encrypted.encrypted.encrypted" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FolderToEncrypt/Screenshot from 2019-10-24 21-58-55.png.encrypted.encrypted.encrypted.encrypted" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/Crypto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crypto/Crypto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/Crypto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crypto/EncrDecrFilesUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/FolderToEncrypt/secretimg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/FolderToEncrypt/secrettxt.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Crypto/Crypto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Crypto/Crypto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Crypto/CryptoException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Crypto/CryptoException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Crypto/DHUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Crypto/DHUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/ProcessConnectionThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/ProcessConnectionThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/RemoteBluetoothServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/RemoteBluetoothServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/server/WaitThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/WaitThread.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="99" column="37" lean-forward="true" selection-start-line="99" selection-start-column="37" selection-end-line="99" selection-end-column="37" />
+            <state relative-caret-position="286">
+              <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -41,23 +39,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/Crypto.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="58" column="38" selection-start-line="58" selection-start-column="38" selection-end-line="58" selection-end-column="38" />
+            <state relative-caret-position="321">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
               <folding>
-                <element signature="e#3908#3909#0" expanded="true" />
-                <element signature="e#3949#3950#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/EncrDecrFilesUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+            <state relative-caret-position="180">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="586">
+              <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -130,6 +136,9 @@
         <option value="$PROJECT_DIR$/src/main/java/Crypto/DHKeyAgreement2.java" />
         <option value="$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/Crypto/Crypto.java" />
+        <option value="$PROJECT_DIR$/src/main/java/server/Message.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Crypto/EncrDecrFilesUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java" />
         <option value="$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java" />
       </list>
     </option>
@@ -155,7 +164,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -181,14 +189,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="server" type="b2602c69:ProjectViewProjectNode" />
@@ -223,12 +223,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574537555258" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574616108572" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -271,6 +272,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="rsa generator" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Crypto.RSAGenerator" />
+      <module name="server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="server.RemoteBluetoothServer" />
       <module name="server" />
@@ -280,6 +288,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.server" />
+      <item itemvalue="Application.rsa generator" />
       <item itemvalue="Application.MyDiscoveryListener" />
       <item itemvalue="Application.Crypto.DHKeyAgreement2" />
     </list>
@@ -300,7 +309,8 @@
       <workItem from="1573332816096" duration="57000" />
       <workItem from="1573997515051" duration="4240000" />
       <workItem from="1574006561194" duration="273000" />
-      <workItem from="1574518783950" duration="18500000" />
+      <workItem from="1574518783950" duration="18912000" />
+      <workItem from="1574602084754" duration="6753000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <created>1573316496485</created>
@@ -327,7 +337,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40316000" />
+    <option name="totallyTimeSpent" value="47481000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
@@ -337,13 +347,12 @@
       <window_info id="Designer" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
-      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.49846625" visible="true" weight="0.16565096" />
+      <window_info active="true" content_ui="combo" id="Project" order="4" sideWeight="0.49846625" visible="true" weight="0.18559557" />
       <window_info id="Favorites" order="5" sideWeight="0.50153375" side_tool="true" weight="0.71806675" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Duplicate detector" weight="0.32969433" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32969433" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.29585153" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.29585153" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39847162" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -354,6 +363,7 @@
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32969433" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32969433" />
+      <window_info anchor="bottom" id="Duplicate detector" order="13" weight="0.32969433" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.023268698" />
@@ -450,16 +460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/client/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/server/RemoteDeviceDiscovery.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/net/sf/bluecove/bluecove/2.1.0/bluecove-2.1.0.jar!/javax/bluetooth/DiscoveryListener.class" />
     <entry file="file://$PROJECT_DIR$/src/main/java/server/ServerBlu.java" />
@@ -512,13 +512,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/Optional.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/net/ServerSocket.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
@@ -526,16 +519,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/server/MyDiscoveryListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/server/MyDiscoveryListener.java" />
     <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/jce.jar!/javax/crypto/KeyAgreement.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -543,13 +527,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="23" column="4" lean-forward="true" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/server/Server.java" />
     <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/security/KeyFactory.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -627,31 +605,79 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/server/Message.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/Optional.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+        <state relative-caret-position="206">
+          <caret line="33" column="34" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
+          <folding>
+            <element signature="e#787#788#0" expanded="true" />
+            <element signature="e#843#844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/Crypto.java">
+    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/sun/security/util/Debug.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="58" column="38" selection-start-line="58" selection-start-column="38" selection-end-line="58" selection-end-column="38" />
+        <state relative-caret-position="206">
+          <caret line="98" column="16" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
           <folding>
-            <element signature="e#3908#3909#0" expanded="true" />
-            <element signature="e#3949#3950#0" expanded="true" />
+            <element signature="e#4338#4339#0" expanded="true" />
+            <element signature="e#4399#4400#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/security/Signature.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="205" column="22" selection-start-line="205" selection-start-column="22" selection-end-line="205" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/DHUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/EncrDecrFilesUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="586">
+          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="99" column="37" lean-forward="true" selection-start-line="99" selection-start-column="37" selection-end-line="99" selection-end-column="37" />
+        <state relative-caret-position="286">
+          <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
