@@ -2,32 +2,36 @@ package pt.ulisboa.tecnico.cmov.myapplication;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 public class BluetoothCommandService {
 
     private DHUtils dhutils = null;
-	// Debugging
+    // Debugging
     private static final String TAG = "BluetoothCommandService";
     private static final boolean D = true;
 
     // Unique UUID for this application
     private static final UUID MY_UUID = UUID.fromString("04c6093b-0000-1000-8000-00805f9b34fb");
-    
-    
+
+
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -36,39 +40,40 @@ public class BluetoothCommandService {
     private int mState;
 //    private BluetoothDevice mSavedDevice;
 //    private int mConnectionLostCount;
-    
+
     // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-    
+    static final int STATE_NONE = 0;       // we're doing nothing
+    static final int STATE_LISTEN = 1;     // now listening for incoming connections
+    static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+    static final int STATE_CONNECTED = 3;  // now connected to a remote device
+
     // Constants that indicate command to computer
-    public static final int EXIT_CMD = -1;
-    public static final int VOL_UP = 1;
-    public static final int VOL_DOWN = 2;
-    public static final int MOUSE_MOVE = 3;
-    
+    private static final int EXIT_CMD = -1;
+    static final int VOL_UP = 1;
+    static final int VOL_DOWN = 2;
+
     /**
      * Constructor. Prepares a new BluetoothChat session.
-     * @param context  The UI Activity Context
-     * @param handler  A Handler to send messages back to the UI Activity
+     *
+     * @param context The UI Activity Context
+     * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothCommandService(Context context, Handler handler) {
-        try{
+    BluetoothCommandService(Context context, Handler handler) {
+        try {
             dhutils = new DHUtils();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    	mAdapter = BluetoothAdapter.getDefaultAdapter();
-    	mState = STATE_NONE;
-    	//mConnectionLostCount = 0;
-    	mHandler = handler;
+        mAdapter = BluetoothAdapter.getDefaultAdapter();
+        mState = STATE_NONE;
+        //mConnectionLostCount = 0;
+        mHandler = handler;
     }
-    
+
     /**
      * Set the current state of the chat connection
-     * @param state  An integer defining the current connection state
+     *
+     * @param state An integer defining the current connection state
      */
     private synchronized void setState(int state) {
         if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
@@ -79,32 +84,41 @@ public class BluetoothCommandService {
     }
 
     /**
-     * Return the current connection state. */
+     * Return the current connection state.
+     */
     public synchronized int getState() {
         return mState;
     }
-    
+
     /**
      * Start the chat service. Specifically start AcceptThread to begin a
-     * session in listening (server) mode. Called by the Activity onResume() */
+     * session in listening (server) mode. Called by the Activity onResume()
+     */
     public synchronized void start() {
         if (D) Log.d(TAG, "start");
 
         // Cancel any thread attempting to make a connection
-        if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
+        }
 
         // Cancel any thread currently running a connection
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
 
         setState(STATE_LISTEN);
     }
-    
+
     /**
      * Start the ConnectThread to initiate a connection to a remote device.
-     * @param device  The BluetoothDevice to connect
+     *
+     * @param device The BluetoothDevice to connect
      */
     public synchronized void connect(BluetoothDevice device) {
-    	if (D) Log.d(TAG, "connect to: " + device);
+        if (D) Log.d(TAG, "connect to: " + device);
 
         // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
@@ -115,27 +129,37 @@ public class BluetoothCommandService {
         }
 
         // Cancel any thread currently running a connection
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
 
         // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(device);
         mConnectThread.start();
         setState(STATE_CONNECTING);
     }
-    
+
     /**
      * Start the ConnectedThread to begin managing a Bluetooth connection
-     * @param socket  The BluetoothSocket on which the connection was made
-     * @param device  The BluetoothDevice that has been connected
+     *
+     * @param socket The BluetoothSocket on which the connection was made
+     * @param device The BluetoothDevice that has been connected
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
         if (D) Log.d(TAG, "connected");
 
         // Cancel the thread that completed the connection
-        if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
+        }
 
         // Cancel any thread currently running a connection
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
 
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
@@ -152,7 +176,7 @@ public class BluetoothCommandService {
         //mSavedDevice = device;
         // reset connection lost count
         //mConnectionLostCount = 0;
-        
+
         setState(STATE_CONNECTED);
     }
 
@@ -161,16 +185,21 @@ public class BluetoothCommandService {
      */
     public synchronized void stop() {
         if (D) Log.d(TAG, "stop");
-        if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
-        
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
+        }
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+
         setState(STATE_NONE);
     }
-    
 
-    
+
     public void write(int out) {
-    	// Create temporary object
+        // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
@@ -180,7 +209,7 @@ public class BluetoothCommandService {
         // Perform the write unsynchronized
         r.write(out);
     }
-    
+
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
@@ -210,16 +239,16 @@ public class BluetoothCommandService {
 //	        
 //        	connect(mSavedDevice);   	
 //        } else {
-        	setState(STATE_LISTEN);
-	        // Send a failure message back to the Activity
-	        Message msg = mHandler.obtainMessage(RemoteBluetooth.MESSAGE_TOAST);
-	        Bundle bundle = new Bundle();
-	        bundle.putString(RemoteBluetooth.TOAST, "Device connection was lost");
-	        msg.setData(bundle);
-	        mHandler.sendMessage(msg);
+        setState(STATE_LISTEN);
+        // Send a failure message back to the Activity
+        Message msg = mHandler.obtainMessage(RemoteBluetooth.MESSAGE_TOAST);
+        Bundle bundle = new Bundle();
+        bundle.putString(RemoteBluetooth.TOAST, "Device connection was lost");
+        msg.setData(bundle);
+        mHandler.sendMessage(msg);
 //        }
     }
-    
+
     /**
      * This thread runs while attempting to make an outgoing connection
      * with a device. It runs straight through; the connection either
@@ -313,17 +342,26 @@ public class BluetoothCommandService {
             mmOutStream = tmpOut;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
+            RSAGenerator rsaGenerator = new RSAGenerator();
 
-            try{
-
+            try {
 
                 byte[] clientPubKeyEnc = dhutils.generateServerPublicKey();
 
-                int bytes = mmInStream.read(buffer);
-                mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                if (false){
+                    ObjectInputStream objectInputStream = new ObjectInputStream(mmInStream);
+
+                    ArrayList<byte[]> listServerY = (ArrayList<byte[]>) objectInputStream.readObject();
+                    rsaGenerator.validateSign(listServerY.get(0),listServerY.get(1),"server.pub");
+                }else{
+                    int bytes = mmInStream.read(buffer);
+                }
+
+                //mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                 dhutils.initPhase1(buffer);
                 writeWithoutEnc(clientPubKeyEnc);
                 byte[] sharedSecret = dhutils.generateSharedSecret();
@@ -342,16 +380,15 @@ public class BluetoothCommandService {
                 System.out.println(new String(dhutils.decript(newbuffer)));
                 */
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
 
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
-                	// Read from the InputStream
+                    // Read from the InputStream
                     int bytes = mmInStream.read(buffer);
 
                     // Send the obtained bytes to the UI Activity
@@ -377,9 +414,9 @@ public class BluetoothCommandService {
                 Log.e(TAG, "Exception during write", e);
             }
         }
-        
+
         public void write(int out) {
-        	try {
+            try {
                 mmOutStream.write(dhutils.encript(out));
                 //mmOutStream.write(out);
                 //mmOutStream.flush();
@@ -394,7 +431,7 @@ public class BluetoothCommandService {
 
         public void cancel() {
             try {
-            	mmOutStream.write(EXIT_CMD);
+                mmOutStream.write(EXIT_CMD);
                 mmSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, "close() of connect socket failed", e);
