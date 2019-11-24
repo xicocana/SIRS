@@ -97,7 +97,7 @@ class ProcessConnectionThread implements Runnable {
         try {
 
             OutputStream outputStream = mConnection.openOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
             InputStream inputStream = mConnection.openInputStream();
             DHUtils dhUtils = new DHUtils();
             byte[] buffer = new byte[1024];
@@ -110,7 +110,7 @@ class ProcessConnectionThread implements Runnable {
 
                 Optional<byte[]> signedServerY = rsaGenerator.generateSign(serverPubKeyEnc,"server.key");
                 if (signedServerY.isPresent()){
-
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                     List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(serverPubKeyEnc));
                     listBytesY.addAll(Arrays.asList(signedServerY.get()));
                     objectOutputStream.writeObject(listBytesY);
