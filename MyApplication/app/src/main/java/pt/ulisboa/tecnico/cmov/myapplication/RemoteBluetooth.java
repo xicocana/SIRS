@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +22,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-public class RemoteBluetooth extends Activity {
+import pt.ulisboa.tecnico.cmov.myapplication.biometric.BiometricCallback;
+import pt.ulisboa.tecnico.cmov.myapplication.biometric.BiometricManager;
+
+public class RemoteBluetooth extends Activity  implements BiometricCallback {
 
     // Layout view
     private TextView mTitle;
@@ -49,12 +52,30 @@ public class RemoteBluetooth extends Activity {
     // Member object for Bluetooth Command Service
     private BluetoothCommandService mCommandService = null;
 
+    BiometricManager mBiometricManager;
+
     /**
      * Called when the activity is first created.
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        /*
+         *
+         * */
+        mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
+                .setTitle("DriveKeeper")
+                .setSubtitle("")
+                .setDescription("Validate your Finger")
+                .setNegativeButtonText("Add a cancel button")
+                .build();
+
+        //start authentication
+        mBiometricManager.authenticate(RemoteBluetooth.this);
+
 
         // Set up the window layout
 
@@ -70,7 +91,9 @@ public class RemoteBluetooth extends Activity {
             finish();
             return;
         }
+
     }
+
 
     @Override
     protected void onStart() {
@@ -126,7 +149,8 @@ public class RemoteBluetooth extends Activity {
     }
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private void setupDevice () {
+
+    private void setupDevice() {
         KeyStore keyStore = null;
         try {
             keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
@@ -136,7 +160,6 @@ public class RemoteBluetooth extends Activity {
         } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -239,4 +262,93 @@ public class RemoteBluetooth extends Activity {
 
         return super.onKeyDown(keyCode, event);
     }
+
+
+    @Override
+    public void onSdkVersionNotSupported() {
+        /*
+         *  Will be called if the device sdk version does not support Biometric authentication
+         */
+        Toast.makeText(getApplicationContext(), "device sdk version does not support Biometric authentication", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onBiometricAuthenticationNotSupported() {
+        /*
+         *  Will be called if the device does not contain any fingerprint sensors
+         */
+        Toast.makeText(getApplicationContext(), "device does not contain any fingerprint sensors", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onBiometricAuthenticationNotAvailable() {
+        /*
+         *  The device does not have any biometrics registered in the device.
+         */
+        Toast.makeText(getApplicationContext(), "device does not have any biometrics registered in the device.", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onBiometricAuthenticationPermissionNotGranted() {
+        /*
+         *  android.permission.USE_BIOMETRIC permission is not granted to the app
+         */
+        Toast.makeText(getApplicationContext(), "permission is not granted to the app", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onBiometricAuthenticationInternalError(String error) {
+        /*
+         *  This method is called if one of the fields such as the title, subtitle,
+         * description or the negative button text is empty
+         */
+        Toast.makeText(getApplicationContext(), "InternalError", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAuthenticationFailed() {
+        /*
+         * When the fingerprint doesn’t match with any of the fingerprints registered on the device,
+         * then this callback will be triggered.
+         */
+        Toast.makeText(getApplicationContext(), "the fingerprint doesn’t match with any of the fingerprints registered on the device", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAuthenticationCancelled() {
+        /*
+         * The authentication is cancelled by the user.
+         */
+        Toast.makeText(getApplicationContext(), "The authentication is cancelled by the user.", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAuthenticationSuccessful() {
+        /*
+         * When the fingerprint is has been successfully matched with one of the fingerprints
+         * registered on the device, then this callback will be triggered.
+         */
+        Toast.makeText(getApplicationContext(), "the fingerprint is has been successfully matched with one of the fingerprints", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+        /*
+         * This method is called when a non-fatal error has occurred during the authentication
+         * process. The callback will be provided with an help code to identify the cause of the
+         * error, along with a help message.
+         */
+        Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAuthenticationError(int errorCode, CharSequence errString) {
+        /*
+         * When an unrecoverable error has been encountered and the authentication process has
+         * completed without success, then this callback will be triggered. The callback is provided
+         * with an error code to identify the cause of the error, along with the error message.
+         */
+        Toast.makeText(getApplicationContext(), "Error" + errorCode, Toast.LENGTH_SHORT);
+    }
+
 }

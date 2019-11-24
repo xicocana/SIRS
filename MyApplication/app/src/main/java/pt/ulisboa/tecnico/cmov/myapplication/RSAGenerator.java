@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.cmov.myapplication;
 
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 public class RSAGenerator {
 
-    public static void main(String[] args) {
+    public RSAGenerator() {
         try {
 
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
