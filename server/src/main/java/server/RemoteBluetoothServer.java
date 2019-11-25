@@ -22,6 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import java.io.*;
+import org.apache.commons.io.FileUtils;
+
 public class RemoteBluetoothServer {
 
     public static void main(String[] args) {
@@ -161,38 +164,57 @@ class ProcessConnectionThread implements Runnable {
 
     private void processCommand(int command) {
         try {
-            Robot robot = new Robot();
+            //Robot robot = new Robot();
+            String dir_pen = "/media/xicocana/DriveKeeper/SecretFiles";
+            String dir = "/tmp/DriveKeeper";
+
+            File destDir = null;
+            File srcDir = null;
+
             switch (command) {
                 case KEY_RIGHT:
                     //robot.keyPress(KeyEvent.VK_RIGHT);
                     //robot.keyRelease(KeyEvent.VK_RIGHT);
 
                     //encriptar ficheiros da pasta local
+                    EncrDecrFilesUtil.doSomething(dir, EncrDecrFilesUtil.ENCRYPT, "1234567891111111");
                     //copiar encryptados pa pen
+                    destDir = new File(dir_pen);
+                    srcDir = new File(dir);
+                    try {
+                        FileUtils.copyDirectory(srcDir, destDir);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //delete folder
-
-                    EncrDecrFilesUtil.doSomething("FolderToEncrypt", EncrDecrFilesUtil.ENCRYPT, "1234567891111111");
-
+                    FileUtils.deleteDirectory(srcDir);
+                
                     break;
                 case KEY_LEFT:
                     //robot.keyPress(KeyEvent.VK_LEFT);
                     //robot.keyRelease(KeyEvent.VK_LEFT);
 
-
-                    //FALTA TESTAR ESTA MERDA TDA
-                    //String dir = "/tmp/DriveKeeper";
                     //criar pasta no pc local
-                    //Path tempDir = Files.createTempDirectory(dir);
+                    File file = new File(dir);
+                    if (!file.exists()) {
+                        if (file.mkdir()) {
+                            System.out.println("Temporary directory created");
+                        } else {
+                            System.out.println("Failed to create directory");
+                        }
+                    }
                     //copiar ficheiros pra la
-                    //File folder = new File(dir);
-                    //File[] listOfFiles = folder.listFiles();
-                    //for(File file : listFiles) {
-                    //    Files.copy(file.toPath(),(new File(dir + file.getName())).toPath(),StandardCopyOption.REPLACE_EXISTING);
-                    //}
+                    srcDir = new File(dir_pen);
+                    destDir = new File(dir);
+                    try {
+                        FileUtils.copyDirectory(srcDir, destDir);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //desencriptar
                     EncrDecrFilesUtil.doSomething(dir, EncrDecrFilesUtil.DECRYPT, "1234567891111111");
                     //abrir pasta no explorer
-                    //Desktop.getDesktop().open(new File(dir));
+                    Desktop.getDesktop().open(new File(dir));
                     break;
             }
         } catch (Exception e) {

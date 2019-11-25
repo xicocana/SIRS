@@ -37,7 +37,8 @@ public class EncrDecrFilesUtil {
     }
 
     public static void doSomething(String folderName, String type, String key) {
-        String dir = System.getProperty("user.dir") + "/" + folderName;
+        //String dir = System.getProperty("user.dir") + "/" + folderName;
+        String dir = folderName;
         File folder = new File(dir);
 
 
