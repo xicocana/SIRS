@@ -155,29 +155,49 @@ class ProcessConnectionThread implements Runnable {
      *
      * @param command the command code
      */
+
+    //bora usar folder, /tmp/DriveKeeper/
+    //verificar sempre se pasta ja exist e o crlh
+
     private void processCommand(int command) {
         try {
             Robot robot = new Robot();
             switch (command) {
                 case KEY_RIGHT:
-                    robot.keyPress(KeyEvent.VK_RIGHT);
-                    robot.keyRelease(KeyEvent.VK_RIGHT);
+                    //robot.keyPress(KeyEvent.VK_RIGHT);
+                    //robot.keyRelease(KeyEvent.VK_RIGHT);
+
+                    //encriptar ficheiros da pasta local
+                    //copiar encryptados pa pen
+                    //delete folder
 
                     EncrDecrFilesUtil.doSomething("FolderToEncrypt", EncrDecrFilesUtil.ENCRYPT, "1234567891111111");
 
                     break;
                 case KEY_LEFT:
-                    robot.keyPress(KeyEvent.VK_LEFT);
-                    robot.keyRelease(KeyEvent.VK_LEFT);
+                    //robot.keyPress(KeyEvent.VK_LEFT);
+                    //robot.keyRelease(KeyEvent.VK_LEFT);
 
-                    EncrDecrFilesUtil.doSomething("FolderToEncrypt", EncrDecrFilesUtil.DECRYPT, "1234567891111111");
 
+                    //FALTA TESTAR ESTA MERDA TDA
+                    //String dir = "/tmp/DriveKeeper";
+                    //criar pasta no pc local
+                    //Path tempDir = Files.createTempDirectory(dir);
+                    //copiar ficheiros pra la
+                    //File folder = new File(dir);
+                    //File[] listOfFiles = folder.listFiles();
+                    //for(File file : listFiles) {
+                    //    Files.copy(file.toPath(),(new File(dir + file.getName())).toPath(),StandardCopyOption.REPLACE_EXISTING);
+                    //}
+                    //desencriptar
+                    EncrDecrFilesUtil.doSomething(dir, EncrDecrFilesUtil.DECRYPT, "1234567891111111");
+                    //abrir pasta no explorer
+                    //Desktop.getDesktop().open(new File(dir));
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 }
