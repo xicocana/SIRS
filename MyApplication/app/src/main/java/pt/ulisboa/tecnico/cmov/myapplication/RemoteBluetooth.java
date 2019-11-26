@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,7 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
                 .setTitle("DriveKeeper")
                 .setSubtitle("")
                 .setDescription("Validate your Finger")
-                .setNegativeButtonText("Add a cancel button")
+                .setNegativeButtonText("")
                 .build();
 
         //start authentication

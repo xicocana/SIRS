@@ -91,7 +91,7 @@ public class BiometricDialogV23 extends BottomSheetDialog implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        dismiss();
-        biometricCallback.onAuthenticationCancelled();
+        //dismiss();
+        //biometricCallback.onAuthenticationCancelled();
     }
 }

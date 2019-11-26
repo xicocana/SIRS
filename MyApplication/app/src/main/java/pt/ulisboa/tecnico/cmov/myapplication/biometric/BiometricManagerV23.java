@@ -101,6 +101,8 @@ public class BiometricManagerV23 {
         biometricDialogV23.setSubtitle(subtitle);
         biometricDialogV23.setDescription(description);
         biometricDialogV23.setButtonText(negativeButtonText);
+        biometricDialogV23.setCancelable(false);
+        biometricDialogV23.setCanceledOnTouchOutside(false);
         biometricDialogV23.show();
     }
 
