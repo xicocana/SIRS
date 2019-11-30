@@ -78,7 +78,7 @@ public class RSAGenerator {
         Signature sign;
 
         try {
-            sign = Signature.getInstance("SHA256withRSA");
+            sign = Signature.getInstance("SHA256withEC");
 
             Optional<PrivateKey> privateKey = getPrivateKey(privateKeyName);
             privateKey.ifPresent(privateKey1 -> {
@@ -103,7 +103,7 @@ public class RSAGenerator {
     public boolean validateSign(byte[] dataFile,byte[]dataSignedFile, String pubKeyName) {
         Signature sign;
         try {
-            sign = Signature.getInstance("SHA256withRSA");
+            sign = Signature.getInstance("SHA256withEC");
 
             Optional<PublicKey> publicKey = getPublicKey(pubKeyName);
             publicKey.ifPresent(publicKey1 -> {

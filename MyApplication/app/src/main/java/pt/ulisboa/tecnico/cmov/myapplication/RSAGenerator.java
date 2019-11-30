@@ -4,6 +4,7 @@ package pt.ulisboa.tecnico.cmov.myapplication;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 
 import java.io.*;
@@ -49,19 +50,18 @@ public class RSAGenerator {
     public Optional<PublicKey> getPublicKey(String keyFile) {
         PublicKey pub = null;
         try {
+            String ExternalStorageDirectoryPath = Environment
+                    .getExternalStorageDirectory()
+                    .getAbsolutePath();
+            String targetPath = ExternalStorageDirectoryPath + "/SIRS/server.pub";
 
-            KeyStore keyStore =  KeyStore.getInstance("AndroidKeyStore");
-            keyStore.getKey("server.pub","1234".toCharArray());
+            byte[] keyBytes = Files.readAllBytes(Paths.get(targetPath));
 
-            String dir = System.getProperty("user.dir") + "/" + "resources/";
-            /* Read all the public key bytes */
-            Path path = Paths.get(dir + keyFile);
-            byte[] bytes = Files.readAllBytes(path);
+            X509EncodedKeySpec spec =
+                    new X509EncodedKeySpec(keyBytes);
+            KeyFactory kf = KeyFactory.getInstance("EC");
+            pub = kf.generatePublic(spec);
 
-            /* Generate public key. */
-            X509EncodedKeySpec ks = new X509EncodedKeySpec(bytes);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            pub = kf.generatePublic(ks);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class RSAGenerator {
 
             /* Generate private key. */
             PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(bytes);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
+            KeyFactory kf = KeyFactory.getInstance("EC");
             pvt = kf.generatePrivate(ks);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class RSAGenerator {
         Signature sign;
 
         try {
-            sign = Signature.getInstance("SHA256withRSA");
+            sign = Signature.getInstance("SHA256withEC");
 
             Optional<PrivateKey> privateKey = getPrivateKey(privateKeyName);
             privateKey.ifPresent(privateKey1 -> {
@@ -119,7 +119,7 @@ public class RSAGenerator {
     public boolean validateSign(byte[] dataFile, byte[]dataSignedFile, String pubKeyName) {
         Signature sign;
         try {
-            sign = Signature.getInstance("SHA256withRSA");
+            sign = Signature.getInstance("SHA256withEC");
 
             Optional<PublicKey> publicKey = getPublicKey(pubKeyName);
             publicKey.ifPresent(publicKey1 -> {

@@ -351,7 +351,7 @@ public class BluetoothCommandService {
 
                 byte[] clientPubKeyEnc = dhutils.generateServerPublicKey();
 
-                if (false){
+                if (true){
                     ObjectInputStream objectInputStream = new ObjectInputStream(mmInStream);
 
                     ArrayList<byte[]> listServerY = (ArrayList<byte[]>) objectInputStream.readObject();
