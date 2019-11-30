@@ -24,9 +24,7 @@ import java.util.Optional;
 
 import java.io.*;
 import org.apache.commons.io.FileUtils;
-	
-import java.util.*;
-import java.util.stream.Collectors;
+
 import java.util.stream.Stream;
 
 
@@ -103,38 +101,42 @@ class ProcessConnectionThread implements Runnable {
 
     public void run() {
         try {
-
             OutputStream outputStream = mConnection.openOutputStream();
-
             InputStream inputStream = mConnection.openInputStream();
+
             DHUtils dhUtils = new DHUtils();
-            byte[] buffer = new byte[1024];
+            byte[] buffer;
             RSAGenerator rsaGenerator = new RSAGenerator();
+            boolean v;
 
             //PREPARE DH
             // Server encodes its public key, and sends it over
             byte[] serverPubKeyEnc = dhUtils.generateServerPublicKey();
-            if(false){//TODO Alterar só enquanto nao funciona
 
-                Optional<byte[]> signedServerY = rsaGenerator.generateSign(serverPubKeyEnc,"server.key");
+            Optional<byte[]> signedServerY = rsaGenerator.generateSign(serverPubKeyEnc,"server.key");
+
+            try{
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 if (signedServerY.isPresent()){
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                     List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(serverPubKeyEnc));
                     listBytesY.addAll(Arrays.asList(signedServerY.get()));
                     objectOutputStream.writeObject(listBytesY);
-                }else {
-                    throw new Exception("Error signing message");
+                    //Server receives YB
+                    ArrayList<byte[]> listServerY = (ArrayList<byte[]>) objectInputStream.readObject();
+                    v = rsaGenerator.validateSign(listServerY.get(0),listServerY.get(1),"client.pub");
+                    if (!v){
+                        System.out.println("Error validating key");
+                        return ;
+                    }
+                    dhUtils.initPhase1(listServerY.get(0));
                 }
-            }else{
-                outputStream.write(serverPubKeyEnc);
+            }catch (Exception e){
+                throw new Exception("Error signing message");
             }
 
-
-            //Server receives YB
-            inputStream.read(buffer);
-            dhUtils.initPhase1(buffer);
-
             //Generate Shared Secret
+            System.out.println("Session key Created");
             dhUtils.generateSharedSecret();
 
             //new session starts here
@@ -221,7 +223,7 @@ class ProcessConnectionThread implements Runnable {
                     }
                     //delete folder
                     FileUtils.deleteDirectory(srcDir);
-                
+
                     break;
                 case KEY_LEFT:
                     //robot.keyPress(KeyEvent.VK_LEFT);

@@ -30,7 +30,7 @@ public class RSAGenerator {
             out.close();
 
             out = new FileOutputStream(outFile + ".pub");
-            out.write(pvt.getEncoded());
+            out.write(pub.getEncoded());
             out.close();
 
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class RSAGenerator {
         Signature sign;
 
         try {
-            sign = Signature.getInstance("SHA256withEC");
+            sign = Signature.getInstance("SHA256withECDSA");
 
             Optional<PrivateKey> privateKey = getPrivateKey(privateKeyName);
             privateKey.ifPresent(privateKey1 -> {
@@ -100,10 +100,10 @@ public class RSAGenerator {
 
     }
 
-    public boolean validateSign(byte[] dataFile,byte[]dataSignedFile, String pubKeyName) {
+    public boolean validateSign(byte[] dataFile,byte[]dataSignedFile, String pubKeyName) throws Exception {
         Signature sign;
         try {
-            sign = Signature.getInstance("SHA256withEC");
+            sign = Signature.getInstance("SHA256withECDSA");
 
             Optional<PublicKey> publicKey = getPublicKey(pubKeyName);
             publicKey.ifPresent(publicKey1 -> {
@@ -119,7 +119,7 @@ public class RSAGenerator {
 
         } catch (NoSuchAlgorithmException | SignatureException e) {
             e.printStackTrace();
+            throw new Exception(e);
         }
-        return false;
     }
 }
