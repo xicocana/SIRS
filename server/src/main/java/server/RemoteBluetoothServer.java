@@ -24,6 +24,9 @@ import java.util.Optional;
 
 import java.io.*;
 import org.apache.commons.io.FileUtils;
+	
+import java.util.*;
+
 
 public class RemoteBluetoothServer {
 
@@ -107,7 +110,7 @@ class ProcessConnectionThread implements Runnable {
             RSAGenerator rsaGenerator = new RSAGenerator();
 
             //PREPARE DH
-            // Server encodes her public key, and sends it over
+            // Server encodes its public key, and sends it over
             byte[] serverPubKeyEnc = dhUtils.generateServerPublicKey();
             if(false){//TODO Alterar só enquanto nao funciona
 
@@ -132,6 +135,19 @@ class ProcessConnectionThread implements Runnable {
             //Generate Shared Secret
             dhUtils.generateSharedSecret();
 
+            //new session starts here
+            String dir_sesh = System.getProperty("user.dir") + "/session.txt" ;
+            File file = new File(dir_sesh);
+            //Create the file
+            if (file.createNewFile()) {
+                System.out.println("Session file is created!");
+            } else {
+                System.out.println("Session file already exists. Deleting content");
+                PrintWriter writer = new PrintWriter(file);
+                writer.print("");
+                writer.close();
+            }
+
             // prepare to receive data
             System.out.println("SERVER : Waiting for input ...");
             while (true) {
@@ -139,14 +155,34 @@ class ProcessConnectionThread implements Runnable {
                 int numberOfB = inputStream.read(buffer);
                 byte[] result = Arrays.copyOfRange(buffer, 0, numberOfB);
                 String msg = new String(dhUtils.decript(result));
+                String[] arraymsg = msg.split(":");
 
-                int command = Integer.parseInt(msg);
-
-                if (command == EXIT_CMD) {
-                    System.out.println("SERVER : Finish process");
-                    break;
+                int command = Integer.parseInt(arraymsg[0]);
+                try {
+                    Scanner scanner = new Scanner(file);
+                    int lineNum = 0;
+                    int found = 0;
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        lineNum++;
+                        if(line.equals(arraymsg[1])) { 
+                            found = 1;
+                            System.out.println("id already used.");
+                        }
+                    }
+                    if(found == 0){
+                        PrintWriter writer = new PrintWriter(file);
+                        writer.print(arraymsg[1]);
+                        writer.close();
+                        if (command == EXIT_CMD) {
+                            System.out.println("SERVER : Finish process");
+                            break;
+                        }
+                        processCommand(command);
+                    }
+                } catch(FileNotFoundException e) { 
+                    e.printStackTrace();
                 }
-                processCommand(command);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,7 +201,8 @@ class ProcessConnectionThread implements Runnable {
     private void processCommand(int command) {
         try {
             //Robot robot = new Robot();
-            String dir_pen = "/media/xicocana/DriveKeeper/SecretFiles";
+            String username = System.getProperty("user.name");
+            String dir_pen = "/media/"+username+"/DriveKeeper/SecretFiles";
             String dir = "/tmp/DriveKeeper";
 
             File destDir = null;
