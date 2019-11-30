@@ -65,19 +65,9 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-         *
-         * */
-        mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
-                .setTitle("DriveKeeper")
-                .setSubtitle(" ")
-                .setDescription("Validate your Finger")
-                .setNegativeButtonText(" ")
-                .build();
-
-        //start authentication
-        mBiometricManager.authenticate(RemoteBluetooth.this);
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 55);
+        }
 
         // Set up the window layout
 
@@ -223,13 +213,26 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 55:
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    AssymetricUtils assymetricUtils = new AssymetricUtils(this);
-                }
+
+
+
+                /*
+                 *
+                 * */
+                mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
+                        .setTitle("DriveKeeper")
+                        .setSubtitle(" ")
+                        .setDescription("Validate your Finger")
+                        .setNegativeButtonText(" ")
+                        .build();
+
+                //start authentication
+                mBiometricManager.authenticate(RemoteBluetooth.this);
         }
 
     }
@@ -257,9 +260,8 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
 
             case R.id.setup:
                 // Ensure this device is discoverable by others
-
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 55);
+                    AssymetricUtils assymetricUtils = new AssymetricUtils(this);
                 }
                 return true;
         }

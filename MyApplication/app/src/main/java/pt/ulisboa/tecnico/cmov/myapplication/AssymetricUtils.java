@@ -78,7 +78,7 @@ public class AssymetricUtils {
                 }
             }
 
-            f = new File(Environment.getExternalStorageDirectory()+"/SIRS/public.key");
+            f = new File(Environment.getExternalStorageDirectory()+"/SIRS/client.pub");
             f.createNewFile();
 
             //write the bytes in file

@@ -14,8 +14,12 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BluetoothCommandService {
@@ -346,25 +350,36 @@ public class BluetoothCommandService {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
             RSAGenerator rsaGenerator = new RSAGenerator();
+            boolean v = false;
 
-            try {
 
+            try{
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(mmOutStream);
+                ObjectInputStream objectInputStream = new ObjectInputStream(mmInStream);
                 byte[] clientPubKeyEnc = dhutils.generateServerPublicKey();
 
-                if (true){
-                    ObjectInputStream objectInputStream = new ObjectInputStream(mmInStream);
 
-                    ArrayList<byte[]> listServerY = (ArrayList<byte[]>) objectInputStream.readObject();
-                    rsaGenerator.validateSign(listServerY.get(0),listServerY.get(1),"server.pub");
-                }else{
-                    int bytes = mmInStream.read(buffer);
+                ArrayList<byte[]> listServerY = (ArrayList<byte[]>) objectInputStream.readObject();
+                v = rsaGenerator.validateSign(listServerY.get(0),listServerY.get(1),"server.pub");
+
+                if(v){
+                    //mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                    dhutils.initPhase1(listServerY.get(0));
+                    //writeWithoutEnc(clientPubKeyEnc);
+                        Optional<byte[]> signedServerY = rsaGenerator.generateSign(clientPubKeyEnc,"client.pub");
+                        if (signedServerY.isPresent()){
+                            List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(clientPubKeyEnc));
+                            listBytesY.addAll(Arrays.asList(signedServerY.get()));
+                            objectOutputStream.writeObject(listBytesY);
+                        }else {
+                            throw new Exception("Error signing message");
+                        }
+
+                    //Generate session key
+                    dhutils.generateSharedSecret();
+                }else {
+                    Log.i("CRYPTO", "wrong sig motherucker");
                 }
-
-                //mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
-                dhutils.initPhase1(buffer);
-                writeWithoutEnc(clientPubKeyEnc);
-                //Generate session key
-                dhutils.generateSharedSecret();
 
             } catch (Exception e) {
                 e.printStackTrace();

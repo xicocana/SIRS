@@ -14,35 +14,17 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Enumeration;
 import java.util.Optional;
+
+
 
 public class RSAGenerator {
 
+    private static final String KEYSTORE_ALIAS = "clientKS";
+
     public RSAGenerator() {
-        try {
 
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
-
-            kpg.initialize(2048);
-            KeyPair kp = kpg.generateKeyPair();
-
-            Key pub = kp.getPublic();
-            Key pvt = kp.getPrivate();
-
-            System.out.print(System.getProperty("user.dir") );
-            String outFile = System.getProperty("user.dir") + "/" + "resources/client";
-
-            FileOutputStream out = new FileOutputStream(outFile + ".key");
-            out.write(pvt.getEncoded());
-            out.close();
-
-            out = new FileOutputStream(outFile + ".pub");
-            out.write(pvt.getEncoded());
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -50,6 +32,7 @@ public class RSAGenerator {
     public Optional<PublicKey> getPublicKey(String keyFile) {
         PublicKey pub = null;
         try {
+
             String ExternalStorageDirectoryPath = Environment
                     .getExternalStorageDirectory()
                     .getAbsolutePath();
@@ -72,15 +55,16 @@ public class RSAGenerator {
     public Optional<PrivateKey> getPrivateKey(String keyFile) {
         PrivateKey pvt = null;
         try {
-            String dir = System.getProperty("user.dir") + "/" + "resources/";
-            /* Read all the public key bytes */
-            Path path = Paths.get(dir + keyFile);
-            byte[] bytes = Files.readAllBytes(path);
+            KeyStore ks = KeyStore.getInstance("AndroidKeyStore");
+            ks.load(null);
+            Enumeration<String> aliases = ks.aliases();
 
-            /* Generate private key. */
-            PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(bytes);
-            KeyFactory kf = KeyFactory.getInstance("EC");
-            pvt = kf.generatePrivate(ks);
+            KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+            keyStore.load(null);
+
+
+            KeyStore.Entry entry = keyStore.getEntry(KEYSTORE_ALIAS, null);
+            pvt = ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,7 +77,7 @@ public class RSAGenerator {
         Signature sign;
 
         try {
-            sign = Signature.getInstance("SHA256withEC");
+            sign = Signature.getInstance("SHA256withECDSA");
 
             Optional<PrivateKey> privateKey = getPrivateKey(privateKeyName);
             privateKey.ifPresent(privateKey1 -> {
@@ -119,7 +103,7 @@ public class RSAGenerator {
     public boolean validateSign(byte[] dataFile, byte[]dataSignedFile, String pubKeyName) {
         Signature sign;
         try {
-            sign = Signature.getInstance("SHA256withEC");
+            sign = Signature.getInstance("SHA256withECDSA");
 
             Optional<PublicKey> publicKey = getPublicKey(pubKeyName);
             publicKey.ifPresent(publicKey1 -> {
