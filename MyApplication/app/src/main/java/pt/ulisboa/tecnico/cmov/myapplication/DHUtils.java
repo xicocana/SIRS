@@ -66,7 +66,7 @@ public class DHUtils {
         return sharedSecret;
     }
 
-    public byte[] encript(int msgi) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public byte[] encript(String msg) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         /*
          * server encrypts, using AES in CBC mode
@@ -79,7 +79,6 @@ public class DHUtils {
         // rnd.nextBytes(iv);
         IvParameterSpec ivParams = new IvParameterSpec(iv);
 
-        String msg = "" + msgi;
         clientCipher.init(Cipher.ENCRYPT_MODE, clientAesKey, ivParams);
         byte[] cleartext = msg.getBytes();
         return clientCipher.doFinal(cleartext);

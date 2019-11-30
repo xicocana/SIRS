@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.cmov.myapplication;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,15 +65,14 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         /*
          *
          * */
         mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
                 .setTitle("DriveKeeper")
-                .setSubtitle("")
+                .setSubtitle(" ")
                 .setDescription("Validate your Finger")
-                .setNegativeButtonText("")
+                .setNegativeButtonText(" ")
                 .build();
 
         //start authentication
@@ -92,7 +93,6 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
             finish();
             return;
         }
-
     }
 
 
@@ -195,6 +195,7 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
@@ -223,6 +224,17 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 55:
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    AssymetricUtils assymetricUtils = new AssymetricUtils(this);
+                }
+        }
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
@@ -245,7 +257,10 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
 
             case R.id.setup:
                 // Ensure this device is discoverable by others
-                ensureDiscoverable();
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 55);
+                }
                 return true;
         }
         return false;

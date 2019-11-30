@@ -20,7 +20,7 @@ public class RSAGenerator {
     public RSAGenerator() {
         try {
 
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
 
             kpg.initialize(2048);
             KeyPair kp = kpg.generateKeyPair();

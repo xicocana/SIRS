@@ -12,11 +12,11 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.security.PublicKey;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +26,8 @@ import java.io.*;
 import org.apache.commons.io.FileUtils;
 	
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class RemoteBluetoothServer {
@@ -140,11 +142,14 @@ class ProcessConnectionThread implements Runnable {
             File file = new File(dir_sesh);
             //Create the file
             if (file.createNewFile()) {
+                PrintWriter writer = new PrintWriter(file);
+                writer.print("0");
+                writer.close();
                 System.out.println("Session file is created!");
             } else {
                 System.out.println("Session file already exists. Deleting content");
                 PrintWriter writer = new PrintWriter(file);
-                writer.print("");
+                writer.print("0");
                 writer.close();
             }
 
@@ -158,30 +163,21 @@ class ProcessConnectionThread implements Runnable {
                 String[] arraymsg = msg.split(":");
 
                 int command = Integer.parseInt(arraymsg[0]);
-                try {
-                    Scanner scanner = new Scanner(file);
-                    int lineNum = 0;
-                    int found = 0;
-                    while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        lineNum++;
-                        if(line.equals(arraymsg[1])) { 
-                            found = 1;
-                            System.out.println("id already used.");
-                        }
+
+                boolean errorSession = false;
+                try (Stream<String> stream = Files.lines(Paths.get(dir_sesh))) {
+                    errorSession = stream.map(Integer::valueOf).allMatch(x -> x.compareTo(Integer.parseInt(arraymsg[1])) > 0);
+                }
+
+                if(!errorSession){
+                    PrintWriter writer = new PrintWriter(file);
+                    writer.print(arraymsg[1]);
+                    writer.close();
+                    if (command == EXIT_CMD) {
+                        System.out.println("SERVER : Finish process");
+                        break;
                     }
-                    if(found == 0){
-                        PrintWriter writer = new PrintWriter(file);
-                        writer.print(arraymsg[1]);
-                        writer.close();
-                        if (command == EXIT_CMD) {
-                            System.out.println("SERVER : Finish process");
-                            break;
-                        }
-                        processCommand(command);
-                    }
-                } catch(FileNotFoundException e) { 
-                    e.printStackTrace();
+                    processCommand(command);
                 }
             }
         } catch (Exception e) {

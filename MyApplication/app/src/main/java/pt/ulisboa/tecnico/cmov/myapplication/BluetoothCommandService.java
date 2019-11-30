@@ -339,6 +339,8 @@ public class BluetoothCommandService {
             mmOutStream = tmpOut;
         }
 
+        private int counter = 0;
+
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
@@ -361,21 +363,8 @@ public class BluetoothCommandService {
                 //mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                 dhutils.initPhase1(buffer);
                 writeWithoutEnc(clientPubKeyEnc);
-                byte[] sharedSecret = dhutils.generateSharedSecret();
-                System.out.println("Alice secret: " + dhutils.toHexString(sharedSecret));
-
-                /*byte[] teste = dhutils.encript(100);
-                System.out.println(new String(dhutils.decript(teste)));
-                buffer = new byte[1024];
-                int nob = mmInStream.read(buffer);
-                System.out.println(buffer);
-
-                byte[] newbuffer = new byte[nob];
-                for(int i=0; i<nob; i++){
-                    newbuffer[i] = buffer[i];
-                }
-                System.out.println(new String(dhutils.decript(newbuffer)));
-                */
+                //Generate session key
+                dhutils.generateSharedSecret();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -414,7 +403,9 @@ public class BluetoothCommandService {
 
         public void write(int out) {
             try {
-                mmOutStream.write(dhutils.encript(out));
+                String outMsg = out + ":" + counter;
+                counter++;
+                mmOutStream.write(dhutils.encript(outMsg));
                 //mmOutStream.write(out);
                 //mmOutStream.flush();
 

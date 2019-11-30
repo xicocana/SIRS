@@ -15,9 +15,9 @@ public class RSAGenerator {
     public static void main(String[] args) {
         try {
 
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
 
-            kpg.initialize(2048);
+            kpg.initialize(256);
             KeyPair kp = kpg.generateKeyPair();
 
             Key pub = kp.getPublic();
@@ -48,7 +48,7 @@ public class RSAGenerator {
 
             /* Generate public key. */
             X509EncodedKeySpec ks = new X509EncodedKeySpec(bytes);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
+            KeyFactory kf = KeyFactory.getInstance("EC");
             pub = kf.generatePublic(ks);
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class RSAGenerator {
 
             /* Generate private key. */
             PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(bytes);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
+            KeyFactory kf = KeyFactory.getInstance("EC");
             pvt = kf.generatePrivate(ks);
         } catch (Exception e) {
             e.printStackTrace();
