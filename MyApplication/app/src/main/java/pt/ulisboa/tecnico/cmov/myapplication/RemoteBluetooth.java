@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +31,15 @@ import java.security.cert.CertificateException;
 import pt.ulisboa.tecnico.cmov.myapplication.biometric.BiometricCallback;
 import pt.ulisboa.tecnico.cmov.myapplication.biometric.BiometricManager;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class RemoteBluetooth extends Activity  implements BiometricCallback {
 
     // Layout view
     private TextView mTitle;
+
+    private Timer timer;
 
     // Intent request codesSharedPreference
     private static final int REQUEST_CONNECT_DEVICE = 1;
@@ -116,6 +122,40 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
             if (mCommandService.getState() == BluetoothCommandService.STATE_NONE) {
                 mCommandService.start();
             }
+        }
+
+        if (timer != null) {
+            timer.cancel();
+            Log.i("Main", "cancel timer");
+            timer = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        timer = new Timer();
+        Log.i("Main", "Invoking logout timer");
+        LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
+        timer.schedule(logoutTimeTask, 60000); //auto logout in 1 minute
+    }
+
+    private class LogOutTimerTask extends TimerTask {
+
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void run() {
+            mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
+                    .setTitle("DriveKeeper")
+                    .setSubtitle(" ")
+                    .setDescription("You've been away for too long! Please login again")
+                    .setNegativeButtonText(" ")
+                    .build();
+
+            //start authentication
+            mBiometricManager.authenticate(RemoteBluetooth.this);
+            finish();
         }
     }
 
