@@ -2,8 +2,10 @@ package pt.ulisboa.tecnico.cmov.myapplication;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -219,7 +221,7 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         switch (requestCode) {
             case 55:
 
-
+                startHelp();
 
                 /*
                  *
@@ -235,6 +237,23 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
                 mBiometricManager.authenticate(RemoteBluetooth.this);
         }
 
+    }
+
+    public void startHelp(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(RemoteBluetooth.this);
+        builder1.setMessage("Use the physical device buttons!\n\nVolume Up for Encoding\nVolume Down for Decoding\n");
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                "Ok, I Understand",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     @Override
