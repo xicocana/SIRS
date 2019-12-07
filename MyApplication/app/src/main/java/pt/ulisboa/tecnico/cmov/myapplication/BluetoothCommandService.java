@@ -229,17 +229,7 @@ public class BluetoothCommandService {
      * Indicate that the connection was lost and notify the UI Activity.
      */
     private void connectionLost() {
-//        mConnectionLostCount++;
-//        if (mConnectionLostCount < 3) {
-//        	// Send a reconnect message back to the Activity
-//	        Message msg = mHandler.obtainMessage(RemoteBluetooth.MESSAGE_TOAST);
-//	        Bundle bundle = new Bundle();
-//	        bundle.putString(RemoteBluetooth.TOAST, "Device connection was lost. Reconnecting...");
-//	        msg.setData(bundle);
-//	        mHandler.sendMessage(msg);
-//	        
-//        	connect(mSavedDevice);   	
-//        } else {
+
         setState(STATE_LISTEN);
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(RemoteBluetooth.MESSAGE_TOAST);
@@ -247,7 +237,7 @@ public class BluetoothCommandService {
         bundle.putString(RemoteBluetooth.TOAST, "Device connection was lost");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
-//        }
+
     }
 
     /**
@@ -350,7 +340,7 @@ public class BluetoothCommandService {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
             RSAGenerator rsaGenerator = new RSAGenerator();
-            boolean v = false;
+            boolean v ;
 
 
             try{
@@ -366,25 +356,26 @@ public class BluetoothCommandService {
                     //mHandler.obtainMessage(RemoteBluetooth.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                     dhutils.initPhase1(listServerY.get(0));
                     //writeWithoutEnc(clientPubKeyEnc);
-                        Optional<byte[]> signedServerY = rsaGenerator.generateSign(clientPubKeyEnc,"client.pub");
-                        if (signedServerY.isPresent()){
-                            List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(clientPubKeyEnc));
-                            listBytesY.addAll(Arrays.asList(signedServerY.get()));
-                            objectOutputStream.writeObject(listBytesY);
-                        }else {
-                            throw new Exception("Error signing message");
-                        }
+                    Optional<byte[]> signedServerY = rsaGenerator.generateSign(clientPubKeyEnc,"client.pub");
+                    if (signedServerY.isPresent()){
+                        List<byte[]> listBytesY = new ArrayList<>(Arrays.asList(clientPubKeyEnc));
+                        listBytesY.addAll(Arrays.asList(signedServerY.get()));
+                        objectOutputStream.writeObject(listBytesY);
+                    }else {
+                        throw new Exception("Error signing message");
+                    }
 
                     //Generate session key
                     dhutils.generateSharedSecret();
                 }else {
-                    Log.i("CRYPTO", "wrong sig motherucker");
+                    Log.i("CRYPTO", "wrong sign");
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            write("1234567891111111");
 
             // Keep listening to the InputStream while connected
             while (true) {
@@ -417,6 +408,10 @@ public class BluetoothCommandService {
         }
 
         public void write(int out) {
+            write(Integer.toString(out));
+        }
+
+        public void write(String out) {
             try {
                 String outMsg = out + ":" + counter;
                 counter++;
