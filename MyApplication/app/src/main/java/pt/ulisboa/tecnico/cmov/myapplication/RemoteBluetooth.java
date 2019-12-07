@@ -138,7 +138,7 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         timer = new Timer();
         Log.i("Main", "Invoking logout timer");
         LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
-        timer.schedule(logoutTimeTask, 60000); //auto logout in 1 minute
+        timer.schedule(logoutTimeTask, 10000); //auto logout in 1 minute
     }
 
     private class LogOutTimerTask extends TimerTask {
@@ -146,15 +146,6 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public void run() {
-            mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
-                    .setTitle("DriveKeeper")
-                    .setSubtitle(" ")
-                    .setDescription("You've been away for too long! Please login again")
-                    .setNegativeButtonText(" ")
-                    .build();
-
-            //start authentication
-            mBiometricManager.authenticate(RemoteBluetooth.this);
             finish();
         }
     }
