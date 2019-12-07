@@ -8,6 +8,9 @@ import Crypto.RSAGenerator;
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.bluetooth.UUID;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -17,6 +20,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,8 +98,8 @@ class ProcessConnectionThread implements Runnable {
 
     // Constant that indicate command from devices
     private static final int EXIT_CMD = -1;
-    private static final int KEY_RIGHT = 1;
-    private static final int KEY_LEFT = 2;
+    private static final int ENCRYPT = 1;
+    private static final int DECRYPT = 2;
 
     ProcessConnectionThread(StreamConnection connection) {
         mConnection = connection;
@@ -132,7 +138,7 @@ class ProcessConnectionThread implements Runnable {
                     dhUtils.initPhase1(listServerY.get(0));
                 }
             }catch (Exception e){
-                throw new Exception("Error signing message");
+                e.printStackTrace();
             }
 
             //Generate Shared Secret
@@ -155,18 +161,18 @@ class ProcessConnectionThread implements Runnable {
                 writer.close();
             }
 
+
+            final String[] arraymsgPass = receiveValuesFromClient(inputStream, dhUtils);
+            final String pass = arraymsgPass[0];
+
             // prepare to receive data
             System.out.println("SERVER : Waiting for input ...");
             while (true) {
-                buffer = new byte[1024];
-                int numberOfB = inputStream.read(buffer);
-                byte[] result = Arrays.copyOfRange(buffer, 0, numberOfB);
-                String msg = new String(dhUtils.decript(result));
-                String[] arraymsg = msg.split(":");
+                final String[] arraymsg = receiveValuesFromClient(inputStream, dhUtils);
 
                 int command = Integer.parseInt(arraymsg[0]);
 
-                boolean errorSession = false;
+                boolean errorSession ;
                 try (Stream<String> stream = Files.lines(Paths.get(dir_sesh))) {
                     errorSession = stream.map(Integer::valueOf).allMatch(x -> x.compareTo(Integer.parseInt(arraymsg[1])) > 0);
                 }
@@ -179,12 +185,21 @@ class ProcessConnectionThread implements Runnable {
                         System.out.println("SERVER : Finish process");
                         break;
                     }
-                    processCommand(command);
+                    processCommand(command,pass);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String[] receiveValuesFromClient(InputStream inputStream, DHUtils dhUtils) throws IOException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        byte[] buffer;
+        buffer = new byte[1024];
+        int numberOfB = inputStream.read(buffer);
+        byte[] result = Arrays.copyOfRange(buffer, 0, numberOfB);
+        String msg = new String(dhUtils.decript(result));
+        return msg.split(":");
     }
 
     /**
@@ -194,25 +209,25 @@ class ProcessConnectionThread implements Runnable {
      */
 
     //bora usar folder, /tmp/DriveKeeper/
-    //verificar sempre se pasta ja exist e o crlh
+    //verificar sempre se pasta
 
-    private void processCommand(int command) {
+    private void processCommand(int command,String pass) {
         try {
             //Robot robot = new Robot();
             String username = System.getProperty("user.name");
             String dir_pen = "/media/"+username+"/DriveKeeper/SecretFiles";
             String dir = "/tmp/DriveKeeper";
 
-            File destDir = null;
-            File srcDir = null;
+            File destDir ;
+            File srcDir ;
 
             switch (command) {
-                case KEY_RIGHT:
+                case ENCRYPT:
                     //robot.keyPress(KeyEvent.VK_RIGHT);
                     //robot.keyRelease(KeyEvent.VK_RIGHT);
 
                     //encriptar ficheiros da pasta local
-                    EncrDecrFilesUtil.doSomething(dir, EncrDecrFilesUtil.ENCRYPT, "1234567891111111");
+                    EncrDecrFilesUtil.doSomething(dir, EncrDecrFilesUtil.ENCRYPT, pass);
                     //copiar encryptados pa pen
                     destDir = new File(dir_pen);
                     srcDir = new File(dir);
@@ -225,7 +240,7 @@ class ProcessConnectionThread implements Runnable {
                     FileUtils.deleteDirectory(srcDir);
 
                     break;
-                case KEY_LEFT:
+                case DECRYPT:
                     //robot.keyPress(KeyEvent.VK_LEFT);
                     //robot.keyRelease(KeyEvent.VK_LEFT);
 

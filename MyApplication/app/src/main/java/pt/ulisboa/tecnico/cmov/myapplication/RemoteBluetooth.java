@@ -253,21 +253,26 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
             case 55:
 
                 startHelp();
+                autheticateFingerPrint();
 
-                /*
-                 *
-                 * */
-                mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
-                        .setTitle("DriveKeeper")
-                        .setSubtitle(" ")
-                        .setDescription("Validate your Finger")
-                        .setNegativeButtonText(" ")
-                        .build();
-
-                //start authentication
-                mBiometricManager.authenticate(RemoteBluetooth.this);
         }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void autheticateFingerPrint() {
+        /*
+         *
+         * */
+        mBiometricManager = new BiometricManager.BiometricBuilder(RemoteBluetooth.this)
+                .setTitle("DriveKeeper")
+                .setSubtitle(" ")
+                .setDescription("Validate your Finger")
+                .setNegativeButtonText(" ")
+                .build();
+
+        //start authentication
+        mBiometricManager.authenticate(RemoteBluetooth.this);
     }
 
     public void startHelp(){
@@ -320,14 +325,16 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
 
     int flag1 = 0;
     int flag2 = 0;
+    int keyCode = -1;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             if(flag1==0){
-                mCommandService.write(BluetoothCommandService.VOL_UP);
-                flag1++;
-                flag2=0;
+                this.keyCode = keyCode;
+                autheticateFingerPrint();
+
                 return true;
             }else{
                 Toast.makeText(this, "Files already ciphered", Toast.LENGTH_SHORT).show();
@@ -335,9 +342,9 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
             }
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             if(flag2==0){
-                mCommandService.write(BluetoothCommandService.VOL_DOWN);
-                flag2++;
-                flag1=0;
+                this.keyCode = keyCode;
+                autheticateFingerPrint();
+
                 return true;
             }else{
                 Toast.makeText(this, "Files already deciphered", Toast.LENGTH_SHORT).show();
@@ -415,6 +422,16 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
          * registered on the device, then this callback will be triggered.
          */
         Toast.makeText(getApplicationContext(), "the fingerprint is has been successfully matched with one of the fingerprints", Toast.LENGTH_SHORT);
+
+        if (keyCode != -1 && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            mCommandService.write(BluetoothCommandService.VOL_UP);
+            flag1++;
+            flag2=0;
+        }else if (keyCode != -1 ){
+            mCommandService.write(BluetoothCommandService.VOL_DOWN);
+            flag2++;
+            flag1=0;
+        }
     }
 
     @Override

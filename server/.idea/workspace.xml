@@ -3,15 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="9563c8e6-bc4d-4cd1-b313-a1e1c04cb8b4" name="Default Changelist" comment="&quot;fix&quot;">
       <change beforePath="$PROJECT_DIR$/../MyApplication/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/BluetoothCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/BluetoothCommandService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyApplication/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/AssymetricUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MyApplication/app/src/main/java/pt/ulisboa/tecnico/cmov/myapplication/AssymetricUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/client.pub" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/server.key" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/server.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/client.pub" beforeDir="false" afterPath="$PROJECT_DIR$/resources/client.pub" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/session.txt" beforeDir="false" afterPath="$PROJECT_DIR$/session.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crypto/RSAGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Crypto/RSAGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Crypto/RSAGenerator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/ProcessConnectionThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/ProcessConnectionThread.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/RemoteBluetoothServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/RemoteBluetoothServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/server/WaitThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/server/WaitThread.class" afterDir="false" />
@@ -27,7 +24,20 @@
     <favorites_list name="server" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="403">
+              <caret line="140" column="36" selection-start-line="140" selection-start-column="36" selection-end-line="140" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -106,8 +116,8 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="2128" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="1003" />
     <option name="y" value="89" />
     <option name="width" value="917" />
     <option name="height" value="789" />
@@ -120,15 +130,76 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Crypto" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="RemoteBluetoothServer.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575142358745" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575725411378" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -212,6 +283,7 @@
       <workItem from="1574602084754" duration="8587000" />
       <workItem from="1575113046724" duration="5580000" />
       <workItem from="1575119809188" duration="14785000" />
+      <workItem from="1575719802221" duration="4939000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <created>1573316496485</created>
@@ -238,7 +310,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69680000" />
+    <option name="totallyTimeSpent" value="74619000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -250,18 +322,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="2128" y="89" width="917" height="789" extended-state="0" />
+    <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Image Layers" order="0" />
       <window_info id="Designer" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
-      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.49837133" visible="true" weight="0.39470655" />
+      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.49837133" visible="true" weight="0.18760376" />
       <window_info id="Favorites" order="5" sideWeight="0.50153375" side_tool="true" weight="0.71806675" />
       <window_info id="Structure" order="6" sideWeight="0.50162864" side_tool="true" weight="0.1900277" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32969433" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.36042944" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.35986915" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2172489" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -297,37 +370,37 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>169</line>
+          <line>175</line>
           <properties />
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>168</line>
+          <line>174</line>
           <properties />
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>139</line>
+          <line>145</line>
           <properties />
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>120</line>
+          <line>126</line>
           <properties />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>115</line>
+          <line>121</line>
           <properties />
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java</url>
-          <line>126</line>
+          <line>132</line>
           <properties />
           <option name="timeStamp" value="61" />
         </line-breakpoint>
@@ -620,17 +693,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/Arrays.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="1392" column="30" selection-start-line="1392" selection-start-column="30" selection-end-line="1392" selection-end-column="30" />
-          <folding>
-            <element signature="e#45779#45780#0" expanded="true" />
-            <element signature="e#45828#45829#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/net/sf/bluecove/bluecove/2.1.0/bluecove-2.1.0.jar!/javax/microedition/io/InputConnection.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -658,14 +720,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/Arrays.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="1392" column="30" selection-start-line="1392" selection-start-column="30" selection-end-line="1392" selection-end-column="30" />
+          <folding>
+            <element signature="e#45779#45780#0" expanded="true" />
+            <element signature="e#45828#45829#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/server/RemoteBluetoothServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="137" column="24" lean-forward="true" selection-start-line="137" selection-start-column="24" selection-end-line="137" selection-end-column="24" />
+        <state relative-caret-position="403">
+          <caret line="140" column="36" selection-start-line="140" selection-start-column="36" selection-end-line="140" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2681#2682#0" expanded="true" />
-            <element signature="e#2721#2722#0" expanded="true" />
           </folding>
         </state>
       </provider>

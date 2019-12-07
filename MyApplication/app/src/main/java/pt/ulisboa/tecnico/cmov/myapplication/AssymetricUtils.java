@@ -74,7 +74,11 @@ public class AssymetricUtils {
             if (!f.exists()) {
                 if(ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     boolean t = f.mkdirs();
-                    
+                    if (!t){
+                        Toast.makeText(context, "Main Directory not created", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(context, "Main Directory created", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
