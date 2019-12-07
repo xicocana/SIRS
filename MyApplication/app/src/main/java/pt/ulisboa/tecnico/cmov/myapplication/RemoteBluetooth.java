@@ -319,6 +319,10 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
                     AssymetricUtils assymetricUtils = new AssymetricUtils(this);
                 }
                 return true;
+            case R.id.help:
+                // Ensure this device is discoverable by others
+                startHelp();
+                return true;
         }
         return false;
     }
