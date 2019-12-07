@@ -318,14 +318,32 @@ public class RemoteBluetooth extends Activity  implements BiometricCallback {
         return false;
     }
 
+    int flag1 = 0;
+    int flag2 = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            mCommandService.write(BluetoothCommandService.VOL_UP);
-            return true;
+            if(flag1==0){
+                mCommandService.write(BluetoothCommandService.VOL_UP);
+                flag1++;
+                flag2=0;
+                return true;
+            }else{
+                Toast.makeText(this, "Files already ciphered", Toast.LENGTH_SHORT).show();
+                return true;
+            }
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            mCommandService.write(BluetoothCommandService.VOL_DOWN);
-            return true;
+            if(flag2==0){
+                mCommandService.write(BluetoothCommandService.VOL_DOWN);
+                flag2++;
+                flag1=0;
+                return true;
+            }else{
+                Toast.makeText(this, "Files already deciphered", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
         }
 
         return super.onKeyDown(keyCode, event);
